@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Not Found</title>
+  <link href="../static/css/NotFound.css" th:href="@{/css/NotFound.css}" rel="stylesheet"/>
+</head>
+<body class="not-found">
+<div class="number">404</div>
+<div class="text"><h2 th:text="#{error.not-found}">Page Not Found</h2>
+  <h3 class="error" th:text="${error}">Error placeholder</h3>
+</div>
+<a class="me" href="https://codepen.io/uzcho_/pens/popular/?grid_type=list" target="_blank"></a>
+<ul>
+  <li><h3 class="link-dark"><a href="/" th:text="#{navigation.home}">Home</a></h3></li>
+</ul>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Services</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="/static/assets/favicon.ico" />
+    <script th:src="@{/js/jq.js}"></script>
+    <!-- Font Awesome icons (free version)-->
+    <script th:src="@{https://use.fontawesome.com/releases/v6.3.0/js/all.js}" crossorigin="anonymous"></script>
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link th:href="@{/css/styles.css}" rel="stylesheet" />
+    <link th:href="@{/css/VisitForm.css}" rel="stylesheet" />
+</head>
+<body id="page-top">
+<!-- Navigation-->
+<nav th:replace="~{/fragments/navbar :: navbar}">Heather fragment</nav>
+
+<section class="page-section" id="services">
+    <div class="container">
+        <div >
+            <form th:action="@{/visits/new}" method="post" th:object="${visit}">
+                <div class="form-group">
+                    <label th:class="errors" th:if="${#fields.hasErrors('vehicleLicensePlate')}" th:errors="*{vehicleLicensePlate}">Error</label>
+                    <br>
+                    <label for="licensePlate">License Plate:</label>
+                    <input th:unless="${plate}" th:type="text" id="licensePlate" name="licensePlate" th:field="*{vehicleLicensePlate}" placeholder="Enter license plate">
+                    <input th:if="${plate}" th:field="*{vehicleLicensePlate}"/>
+                    <br>
+                </div>
+
+                <div class="form-group">
+                    <label>Services:</label>
+                        <label th:class="errors" th:errors="*{services}" th:text="${error}">Error</label>
+                    <div class="checkbox-group" th:each="service : ${allServices}">
+                        <input type="checkbox" id="oilChange" th:name="selected" th:value="${service.id}" th:field="*{services}">
+                        <label class="checkbox-label" for="oilChange" th:text="${service.serviceName} + ' ' + ${#numbers.formatDecimal(service.price, 1, 2, 'COMMA')} + ' BGN'">Oil Change</label>
+                    </div>
+                </div>
+                <br>
+
+                <div class="form-group">
+                    <label for="currency">Currency:</label>
+                    <div>
+                        <select id="currency" name="currency" th:placeholder="Currency" th:field="*{currencyDto}">
+                            <option th:each=" curr : ${currencies}" th:value="${curr}" th:text="${curr.toString()}"></option>
+                        </select>
+                    </div>
+                </div>
+
+
+                <br>
+                <div class="text-center">
+                    <input type="submit" value="Submit">
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+
+<script th:src="@{https://cdn.jsdelivr.net/npm/bootstrap5.2.3/dist/js/bootstrap.bundle.min.js}"></script>
+<!-- Core theme JS-->
+<script th:src="@{/js/scripts.js}"></script>
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+<!-- * *                               SB Forms JS                               * *-->
+<!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+<script th:src="@{https://cdn.startbootstrap.com/sb-forms-latest.js}"></script>
+</body>
+</html>

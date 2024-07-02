@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+    <link href="../static/styles.css" th:href="@{/styles.css}" rel="stylesheet"/>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            max-width: 400px;
+            width: 100%;
+        }
+        .image-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            margin-bottom: -150px; /* Adjust this value as needed */
+        }
+        .image-container img {
+            width: 100%;
+            height: auto;
+        }
+        .screen__content {
+            padding: 20px 40px 40px 40px; /* Reduced top padding */
+        }
+        .login__field {
+            position: relative;
+            margin-bottom: 5px;
+        }
+        .login__icon {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 20px;
+            color: #999999;
+        }
+        .login__input {
+            width: calc(100% - 40px);
+            padding: 10px 10px 10px 40px;
+            border: 1px solid #dddddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .login__input:focus {
+            border-color: #66afe9;
+            outline: none;
+        }
+        .error {
+            color: #ea7495;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+        .forgotten-password {
+            display: block;
+            margin-top: 20px;
+            color: #007bff;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .forgotten-password:hover {
+            text-decoration: underline;
+        }
+        .button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="image-container">
+        <img th:src="@{/assets/blueLogo.png}" alt="Car Service Logo">
+    </div>
+    <div class="screen__content">
+        <form class="login" action="#" th:action="@{/auth/register}" th:object="${register}" method="post">
+            <div class="login__field">
+                <i class="login__icon fas fa-user"></i>
+                <input type="text" class="login__input" th:field="*{username}" placeholder="Username">
+                <label class="error" th:errors="*{username}">Username errors</label>
+            </div>
+            <div class="login__field">
+                <i class="login__icon fas fa-lock"></i>
+                <input type="password" class="login__input" th:field="*{password}" placeholder="Password">
+                <label class="error" th:errors="*{password}">Password errors</label>
+            </div>
+            <div class="login__field">
+                <i class="login__icon fas fa-lock"></i>
+                <input type="password" class="login__input" th:field="*{passwordConfirm}" placeholder="Confirm Password">
+                <label class="error" th:errors="*{passwordConfirm}">Password confirm errors</label>
+            </div>
+            <div class="login__field">
+                <i class="login__icon fas fa-envelope"></i>
+                <input type="text" class="login__input" th:field="*{email}" placeholder="Email">
+                <label class="error" th:errors="*{email}">Email errors</label>
+            </div>
+            <div class="login__field">
+                <i class="login__icon fas fa-phone"></i>
+                <input type="text" class="login__input" th:field="*{phoneNumber}" placeholder="Phone number">
+                <label class="error" th:errors="*{phoneNumber}">Phone errors</label>
+            </div>
+            <input class="button login__submit" type="submit" value="Register">
+        </form>
+        <a class="forgotten-password" th:href="@{/auth/login}">Already have an account? Login here</a>
+    </div>
+</div>
+</body>
+</html>

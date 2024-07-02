@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>User Profile</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="/static/assets/favicon.ico"/>
+    <script th:src="@{/js/jq.js}"></script>
+    <!-- Font Awesome icons (free version)-->
+    <script th:src="@{https://use.fontawesome.com/releases/v6.3.0/js/all.js}" crossorigin="anonymous"></script>
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css"/>
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css"/>
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link th:href="@{/css/styles.css}" rel="stylesheet"/>
+    <link href="../static/styles.css" th:href="@{/styles.css}" rel="stylesheet"/>
+    <style>
+        .user-info {
+            display: flex;
+            flex-direction: column;
+            margin-right: 50px;
+            color: wheat;
+        }
+
+        .user-info h2 {
+            margin-top: 0;
+        }
+
+        .vehicle {
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+        }
+
+        .vehicle .license {
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .vehicle .details {
+            display: none;
+            padding-left: 16px;
+            color: #01cc99;
+        }
+
+        .vehicle:hover .details {
+            display: block;
+        }
+
+        .user .details p {
+            margin: 0;
+        }
+
+        h2 {
+            color: yellow;
+        }
+
+        p {
+            font-weight: bold;
+        }
+        .button-add {
+            background-color: #4CAF50; /* Green */
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            float: right; /* Position the button on the right */
+        }
+        .button-edit {
+            background-color: #4CAF50; /* Green */
+            border: none;
+            width: 10%;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            float: left; /* Position the button on the right */
+        }
+
+        .button-edit-user {
+            background-color: #4ca6e5; /* Green */
+            border: none;
+            width: 10%;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            float: inside; /* Position the button on the right */
+        }
+
+    </style>
+</head>
+<body id="page-top">
+<!-- Navigation-->
+<nav th:replace="~{/fragments/navbar :: navbar}">Heather fragment</nav>
+<section id="contact">
+    <div class="container">
+        <div class="text-center">
+            <div class="user-info">
+                <h2> User Information</h2>
+                <p>Username: <span th:text="${user.username}"></span></p>
+                <p>Email: <span th:text="${user.email}"></span></p>
+                <p>Names: <span th:text="${user.names}"></span></p>
+                <p>Phone Number: <span th:text="${user.phoneNumber}"></span></p>
+                <p>Status: <span th:text="${user.userStatus}"></span></p>
+                <p>Role: <span th:text="${user.userRole}"></span></p>
+                <a th:if="${isAdmin}" th:href="@{/users/{id}/update(id=${user.userId})}">
+                    <input style=" width: 10%" class="button-edit-user login__submit" type="submit" value="Edit">
+                </a>
+            </div>
+        </div>
+
+        <div id="vehicleList">
+            <div th:each="vehicle : ${userVehicles}" class="vehicle">
+                <a th:href="@{/vehicles/{id}(id=${vehicle.id})}" onclick="toggleDetails(this)">
+                    <span class="license" th:text="${vehicle.getLicensePlate()}"></span>
+                </a>
+                <br>
+                <div class="details">
+                    <p>Model: <span th:text="${vehicle.getModel().getModelName()}"></span></p>
+                    <p>Brand: <span th:text="${vehicle.getModel().getBrand().getBrandName()}"></span></p>
+                    <p>Year: <span th:text="${vehicle.getYear()}"></span></p>
+                    <p>Vin: <span th:text="${vehicle.getVin()}"></span></p>
+                    <a th:if="${isAdmin}" th:href="@{/vehicles/{id}/update(id=${vehicle.id})}">
+                        <input class="button-edit login__submit" type="submit" value="Edit">
+                    </a>
+                </div>
+                <br>
+            </div>
+        </div>
+        <script>
+            function toggleDetails(element) {
+                var details = element.nextElementSibling;
+                if (details.style.display === "none") {
+                    details.style.display = "block";
+                } else {
+                    details.style.display = "none";
+                }
+            }
+        </script>
+
+        <div th:if="${user.userRole.CUSTOMER}">
+            <form th:if="${isAdmin or isEmployee}" th:action="@{/vehicles/new/{id}(id=${user.userId})}">
+                <input style=" width: 10%" class="button-add login__submit" type="submit" value="Add car">
+            </form>
+        </div>
+
+    </div>
+</section>
+
+
+<script th:src="@{https://cdn.jsdelivr.net/npm/bootstrap5.2.3/dist/js/bootstrap.bundle.min.js}"></script>
+<!-- Core theme JS-->
+<script th:src="@{../js/scripts.js}"></script>
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+<!-- * *                               SB Forms JS                               * *-->
+<!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+<script th:src="@{https://cdn.startbootstrap.com/sb-forms-latest.js}"></script>
+</body>
+</html>

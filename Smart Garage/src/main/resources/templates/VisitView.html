@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Services</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="/static/assets/favicon.ico" />
+    <script th:src="@{/js/jq.js}"></script>
+    <!-- Font Awesome icons (free version)-->
+    <script th:src="@{https://use.fontawesome.com/releases/v6.3.0/js/all.js}" crossorigin="anonymous"></script>
+    <!-- html2pdf CDN-->
+    <script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js}"></script>
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link th:href="@{/css/styles.css}" rel="stylesheet" />
+    <link th:href="@{/css/Visit.css}" rel="stylesheet" />
+</head>
+<body id="page-top">
+<!-- Navigation-->
+<nav th:replace="~{/fragments/navbar :: navbar}">Heather fragment</nav>
+
+<section class="page-section" id="services">
+    <div class="container">
+        <div class="text-center" id="makepdf">
+            <h1>Car Repair Visit Report</h1>
+            <table>
+                <tr>
+                    <td><strong>Visit ID:</strong></td>
+                    <td th:text="${visit.id}">ID</td>
+                </tr>
+                <tr>
+                    <td><strong>Visit Date:</strong></td>
+                    <td th:text="${#temporals.format(visit.creationDate, 'dd-MMM-yyyy')}">June 1, 2023</td>
+                </tr>
+                <tr>
+                    <td><strong>Vehicle License Plate:</strong></td>
+                    <td th:text="${visit.vehicle.licensePlate}">ABC123</td>
+                </tr>
+                <tr>
+                    <td><strong>Owner names:</strong></td>
+                    <td th:text="${visit.vehicle.owner.names}">John Doe</td>
+                </tr>
+                <tr>
+                    <td><strong>User Email:</strong></td>
+                    <td>john.doe@example.com</td>
+                </tr>
+            </table>
+
+            <br />
+
+            <table>
+                <thead>
+                <tr>
+                    <th>Service ID</th>
+                    <th>Service</th>
+                    <th>Cost</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="service : ${visit.services}">
+                    <td th:text="${service.serviceId}"></td>
+                    <td th:text="${service.serviceName}"></td>
+                    <td th:text="${#numbers.formatDecimal(service.servicePrice, 1, 2, 'COMMA')} + ' ' + ${visit.currency.toString()}"></td>
+                </tr>
+
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td colspan="2"><strong>Total Cost:</strong></td>
+                    <td th:text="${#numbers.formatDecimal(visit.totalPrice, 1, 2, 'COMMA')} + ' ' + ${visit.currency.toString()}"><strong>$145.00</strong></td>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+        <div class="text-center">
+            <button id="button" th:text="#{btn.pdf}">Generate PDF</button>
+        </div>
+    </div>
+</section>
+
+<script>
+    var button = document.getElementById("button");
+    var makepdf = document.getElementById("makepdf");
+
+    button.addEventListener("click", function () {
+        html2pdf().from(makepdf).save();
+    });
+</script>
+
+<script th:src="@{https://cdn.jsdelivr.net/npm/bootstrap5.2.3/dist/js/bootstrap.bundle.min.js}"></script>
+<!-- Core theme JS-->
+<script th:src="@{/js/scripts.js}"></script>
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+<!-- * *                               SB Forms JS                               * *-->
+<!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+<script th:src="@{https://cdn.startbootstrap.com/sb-forms-latest.js}"></script>
+</body>
+</html>

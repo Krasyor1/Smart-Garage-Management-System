@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <title>Vehicle Profile</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>Services</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="/static/assets/favicon.ico"/>
+    <script th:src="@{/js/jq.js}"></script>
+    <!-- Font Awesome icons (free version)-->
+    <script th:src="@{https://use.fontawesome.com/releases/v6.3.0/js/all.js}" crossorigin="anonymous"></script>
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css"/>
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css"/>
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link th:href="@{/css/styles.css}" rel="stylesheet"/>
+    <link href="../static/styles.css" th:href="@{/styles.css}" rel="stylesheet"/>
+    <style>
+        .vehicle-info {
+            display: flex;
+            flex-direction: column;
+            margin-right: 50px;
+        }
+
+        .vehicle-info h3 {
+            margin-top: 0;
+            color: #5D54A4;
+        }
+
+        .model-info h4{
+            display: flex;
+            flex-direction: column;
+            margin-right: 40px;
+            color: #6A679E;
+        }
+
+
+        .visit-list {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .visit-table {
+            border-collapse: collapse;
+            width: auto;
+        }
+
+        .visit-table th, .visit-table td {
+            border: 1px solid black;
+            padding: 5px;
+        }
+
+        .visit-table th {
+            text-align: left;
+            color: #4ca6e5;
+        }
+
+        .visit-table a {
+            text-align: left;
+            color: whitesmoke;
+        }
+
+        .visit-table td {
+            text-align: left;
+            color: whitesmoke;
+        }
+
+        .visit-table a {
+            text-decoration: none;
+            color: blue;
+        }
+
+        h2 {
+            color: whitesmoke;
+        }
+
+        h3 {
+            color: #0dcaf0;
+        }
+        h4 {
+            color: #0dcaf0;
+        }
+        .button-edit {
+            background-color: #4ca6e5; /* Green */
+            border: none;
+            width: 10%;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            float: inside; /* Position the button on the right */
+        }
+        .button-add {
+            background-color: #4CAF50; /* Green */
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 4px;
+            cursor: pointer;
+            float: right; /* Position the button on the right */
+        }
+
+    </style>
+</head>
+<body id="page-top">
+<!-- Responsive navbar-->
+<nav th:replace="~{/fragments/navbar :: navbar}">Heather fragment</nav>
+<section id="contact">
+    <div class="container">
+        <div class="text-center">
+
+            <!-- Vehicle View-->
+            <div class="vehicle-preview">
+                <h2>Your Vehicle</h2>
+                <h3 class="vehicle-info">
+                    <p> License Plate: <span th:text="${vehicle.getLicensePlate()}">CB0000AA</span></p>
+                    <p> VIN: <span th:text="${vehicle.getVin()}">VIN</span></p>
+                </h3>
+                <h4 class="model-info">
+                    <p> Model: <span th:text="${vehicle.getModel().getBrand().getBrandName()}">Brand</span></p>
+                    <p> Brand: <span th:text="${vehicle.model.getModelName()}">Model</span></p>
+                    <p> Year of Production: <span th:text="${vehicle.year}">Year</span></p>
+                    <a th:if="${isAdmin}" th:href="@{/vehicles/{id}/update(id=${vehicle.id})}">
+                        <input style=" width: 10%" class="button-edit login__submit" type="submit" value="Edit">
+                    </a>
+                </h4>
+            </div>
+        </div>
+
+        <form th:if="${isAdmin or isEmployee}" th:action="@{/visits/new/vehicle/{licensePlate}(licensePlate=${vehicle.licensePlate})}">
+            <input style=" width: 10%" class="button-add login__submit" type="submit" value="New Visit">
+        </form>
+        </br>
+
+        <!-- Visits preview-->
+        <div class="visit-list">
+            <h2>Visit List</h2>
+            <table class="visit-table">
+                <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Status</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="visit : ${visits}">
+                    <td>
+                        <a style="color: #01cc99" th:href="@{/visits/{id}(id=${visit.id})}" th:text="${visit.getCreationDate()}"></a>
+                    </td>
+                    <td th:text="${visit.getStatus()}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+</body>
+</html>

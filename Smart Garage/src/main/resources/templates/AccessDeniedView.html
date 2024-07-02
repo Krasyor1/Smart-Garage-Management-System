@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" lang="en" xmlns:th="http://www.thymeleaf.org">
+    <title>Access Denied</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="UTF-8">
+    <link href="../static/css/AccessDenied.css" th:href="@{/AccessDeniedView.css}" rel="stylesheet"/>
+    <link rel="stylesheet" th:href="@{https://www.w3schools.com/w3css/4/w3.css}">
+</head>
+<body>
+<div class="w3-display-middle">
+    <h1 class="w3-jumbo w3-animate-top w3-center"><code>Access Denied</code></h1>
+    <hr class="w3-border-white w3-animate-left" style="margin:auto;width:50%">
+    <h3 class="w3-center w3-animate-right" th:text="#{access.error}">You don't have permission for this page</h3>
+    <h3 class="w3-center w3-animate-zoom">🚫🚫🚫🚫</h3>
+    <h6 class="w3-center w3-animate-zoom">error code:403 forbidden</h6>
+    <br>
+    <br>
+    <br>
+    <form class="center" th:class="center" th:color="green" action="#" th:action="@{/}" method="get">
+        <input class="w3-jumbo w3-animate-top w3-center" type="submit" value="Back to Home Page" th:class="buttonSave">
+    </form>
+</div>
+</body>
+</html>

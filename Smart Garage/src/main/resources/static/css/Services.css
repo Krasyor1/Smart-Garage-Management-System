@@ -1,0 +1,102 @@
+p {
+    display: inline-block;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+}
+h1 {
+    text-align: center;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    color: #333333;
+}
+form {
+    margin: 0 auto;
+    width: 80%;
+    background-color: #ffffff;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+label {
+    display: block;
+    margin-bottom: 10px;
+    color: #333333;
+    flex-basis: 100%;
+}
+input[type="text"], #currency {
+    padding: 10px;
+    margin-bottom: 10px;
+    width: 100%;
+    border-radius: 5px;
+    border: 1px solid #cccccc;
+    background-color: #f9f9f9;
+    color: #333333;
+    font-size: 16px;
+}
+
+input[type="number"] {
+    padding: 10px;
+    margin-bottom: 10px;
+    width: 40%;
+    border-radius: 5px;
+    border: 1px solid #cccccc;
+    background-color: #f9f9f9;
+    color: #333333;
+    font-size: 16px;
+}
+
+select {
+    padding: 10px;
+    margin-bottom: 10px;
+    width: 20%;
+    border-radius: 5px;
+    border: 1px solid #cccccc;
+    background-color: #f9f9f9;
+    color: #333333;
+    font-size: 16px;
+}
+
+input[type="submit"], input[type="button"], input[type="reset"] {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #333333;
+    color: #ffffff;
+    font-size: 16px;
+    cursor: pointer;
+    margin-right: 10px;
+    flex-basis: auto;
+}
+input[type="submit"]:hover, input[type="button"]:hover, input[type="reset"]:hover {
+    background-color: #4CAF50;
+}
+input[type="submit"]:active, input[type="button"]:active, input[type="reset"]:active {
+    background-color: #222222;
+}
+input[type="submit"]:focus, input[type="button"]:focus, input[type="reset"]:focus {
+    outline: none;
+}
+.button-group {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    flex-basis: 100%;
+    margin-top: 10px;
+}
+.button-group > * {
+    margin: 0 10px 0 0;
+}
+.button-group > *:last-child {
+    margin: 0;
+}
+
+a {
+    color: #0f0f0f;
+}

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Users</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>Customers</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="/static/assets/favicon.ico"/>
+    <script th:src="@{/js/jq.js}"></script>
+    <!-- Font Awesome icons (free version)-->
+    <script th:src="@{https://use.fontawesome.com/releases/v6.3.0/js/all.js}" crossorigin="anonymous"></script>
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css"/>
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css"/>
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link th:href="@{/css/styles.css}" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="../static/styles.css" th:href="@{/styles.css}">
+    <style>
+        .user {
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+        }
+
+        .user .email {
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .user .details {
+            display: none;
+            padding-left: 16px;
+            color: #01cc99;
+        }
+
+        .user:hover .details {
+            display: block;
+        }
+
+        .user .details p {
+            margin: 0;
+        }
+    </style>
+</head>
+<body id="page-top">
+<!-- Navigation-->
+<nav th:replace="~{/fragments/navbar :: navbar}">Heather fragment</nav>
+
+<section id="contact">
+    <div class="container">
+        <div class="text-center">
+            <h2 class="section-heading text-uppercase">Users</h2>
+            <!-- Filers nd search bar -->
+            <form action="#" th:action="@{${getAllUsersUrl}}" th:method="post" th:object="${filterOptions}">
+                <input type="text" th:placeholder="Username" th:field="*{username}"/>
+                <input type="text" th:placeholder="Email" th:field="*{email}"/>
+                <input type="text" th:placeholder="Phone" th:field="*{names}"/>
+                <input type="text" th:placeholder="Names" th:field="*{phoneNumber}"/>
+                <input type="text" th:placeholder="Model" th:field="*{vehicleModel}"/>
+                <input type="text" th:placeholder="Brand" th:field="*{vehicleBrand}"/>
+                <input type="text" th:placeholder="Visit" th:field="*{visitBetween}"/>
+                <br><br>
+                <select style="width: 20%" class="custom-select-wrapper" th:field="*{sortBy}" th:placeholder="Sort">
+                    <option th:value='null' selected="selected" style=" display: none;">Sort by</option>
+                    <option value="username">Name</option>
+                    <option value="email">Email</option>
+                    <option value="names">Names</option>
+                    <option value="phoneNumber">Phone</option>
+                    <option value="modelName">Model</option>
+                    <option value="brandName">Brand</option>
+                    <option value="creationDate">Visit</option>
+                </select>
+                <br><br>
+                <select style="width: 20%" class="custom-select-wrapper" th:placeholder="Order" th:field="*{sortOrder}">
+                    <option th:value='null' selected="selected" style=" display: none;">Order by</option>
+                    <option value="asc">Ascending</option>
+                    <option value="desc">Descending</option>
+                </select>
+                <br/><br/>
+
+                <input type="submit" value="Search"/>
+
+            </form>
+            <form>
+                <input th:action="@{/services}" th:method="get" type="submit" value="Clear"/>
+            </form>
+        </div>
+        <!-- List users -->
+        <div id="userList">
+            <div th:each="user : ${filteredUsers}" class="user">
+                <a th:href="@{/users/{id}(id=${user.userId})}" onclick="toggleDetails(this)">
+                    <span class="email" th:text="${user.email}"></span>
+                </a>
+                <br>
+                <div class="details">
+                    <p>Name: <span th:text="${user.names}"></span></p>
+                    <p>Username: <span th:text="${user.username}"></span></p>
+                    <p>Phone: <span th:text="${user.phoneNumber}"></span></p>
+                    <a th:href="@{/users/{id}/update(id=${user.userId})}">
+                        <input style="width: 10%" class="button login__submit" type="submit" value="Edit">
+                    </a>
+                </div>
+            </div>
+        </div>
+        <script>
+            function toggleDetails(element) {
+                var details = element.nextElementSibling;
+                if (details.style.display === "none") {
+                    details.style.display = "block";
+                } else {
+                    details.style.display = "none";
+                }
+            }
+        </script>
+    </div>
+</section>
+<script th:src="@{https://cdn.jsdelivr.net/npm/bootstrap5.2.3/dist/js/bootstrap.bundle.min.js}"></script>
+<!-- Core theme JS-->
+<script th:src="@{../js/scripts.js}"></script>
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+<!-- * *                               SB Forms JS                               * *-->
+<!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+<script th:src="@{https://cdn.startbootstrap.com/sb-forms-latest.js}"></script>
+</body>
+</html>

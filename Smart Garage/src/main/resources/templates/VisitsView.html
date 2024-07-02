@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Services</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="/static/assets/favicon.ico" />
+    <script th:src="@{../js/jq.js}"></script>
+    <!-- Font Awesome icons (free version)-->
+    <script th:src="@{https://use.fontawesome.com/releases/v6.3.0/js/all.js}" crossorigin="anonymous"></script>
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link th:href="@{../css/styles.css}" rel="stylesheet" />
+    <link th:href="@{/css/Visits.css}" rel="stylesheet" />
+</head>
+<body id="page-top">
+<!-- Navigation-->
+<nav th:replace="~{/fragments/navbar :: navbar}">Heather fragment</nav>
+
+<section class="page-section" id="services">
+    <div class="container">
+        <div class="text-center">
+            <h2 class="section-heading text-uppercase">Smart Garage visit report</h2>
+            <!-- Filers nd search bar -->
+
+            <div class="filter-bar">
+                <form th:action="@{/visits}" th:method="post" th:object="${filterOptions}">
+                    <div class="select-wrapper">
+                        <label for="start-date">Start Date:</label>
+                        <input th:field="*{startDate}" type="date" id="start-date" name="start-date">
+                    </div>
+                    <div class="select-wrapper">
+                        <label for="end-date">End Date:</label>
+                        <input th:field="*{endDate}" type="date" id="end-date" name="end-date">
+                    </div>
+                    <div class="select-wrapper">
+                        <label for="currency">Currency:</label>
+                        <select th:field="*{currency}" id="currency" name="currency">
+                            <option th:value='null' selected="selected" style=" display: none;"></option>
+                            <option th:each="curr : ${currencies}" th:value="${curr}" th:text="${curr.toString()}">Currency</option>
+                        </select>
+                    </div>
+                    <div class="select-wrapper">
+                        <label for="status">Status:</label>
+                        <select id="status" name="status" th:field="*{visitStatus}">
+                            <option th:value='null' selected="selected" style=" display: none;"></option>
+                            <option th:each="stat : ${statuses}" th:value="${stat}" th:text="${stat.toString()}">Any</option>
+                        </select>
+                    </div>
+                    <br><br>
+                    <div class="button-container">
+                        <button th:if="${filtered == false}" type="submit" class="btn submit-btn" th:text="#{btn.filter}" >Submit</button>
+                    </div>
+                </form>
+                <form th:action="@{/visits}" th:method="get">
+                    <div class="button-container">
+                        <button th:if="${filtered == true}" type="submit" class="btn clear-btn" th:text="#{btn.clear}">Clear</button>
+                    </div>
+                </form>
+                <form th:action="@{/visits/new}" th:method="get">
+                    <div class="button-container">
+                        <button th:if="${filtered == false}" type="submit" class="btn clear-btn" th:text="#{btn.create.visit}">Clear</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <tr>
+                        <th>Visit ID</th>
+                        <th>Total Price</th>
+                        <th>Currency</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                    <!-- Add table rows and data here -->
+                    <tr th:each="visit : ${visits}" >
+                        <td>Visit ID:
+                            <a th:href="@{visits/report/{id}(id=${visit.id})}" th:text="${visit.id}">View Details</a>
+                        </td>
+                        <td th:text="${#numbers.formatDecimal(visit.totalPrice, 1, 2, 'COMMA')}">Item 2</td>
+                        <td th:text="${visit.currency}">Item 3</td>
+                        <td th:text="${#temporals.format(visit.creationDate, 'dd-MMM-yyyy')}">Item 4</td>
+                        <td th:text="${visit.status}">Item 5</td>
+                        <td>
+                            <a th:if="${visit.status == statuses[0]}" th:href="@{visits/{id}/close(id=${visit.id})}" th:text="#{btn.close}"></a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <br><br>
+
+            <div class="container-pagination">
+                <div class="pagination" >
+                    <div th:each="num : ${#numbers.sequence(1, pageCount)}" >
+                        <a th:href="@{/visits/{number}(number=${num})}" th:value="${num}" class="active" th:text="${num}"></a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<script th:inline="javascript">
+    var currentPage = Number(${currentPage});
+    // Get the pagination links
+    const paginationLinks = document.querySelectorAll('.pagination a');
+
+    // Set the default active page to be the first page
+    paginationLinks[currentPage].classList.add('active');
+
+    // Add an event listener to each pagination link
+    paginationLinks.forEach(link => {
+        link.addEventListener('click', (event) => {
+            // Prevent the link from actually navigating to a new page
+            event.preventDefault();
+
+            // Remove the "active" class from all pagination links
+            paginationLinks.forEach(link => link.classList.remove('active'));
+
+            // Add the "active" class to the clicked link
+            link.classList.add('active');
+        });
+    });
+</script>
+
+<script th:src="@{https://cdn.jsdelivr.net/npm/bootstrap5.2.3/dist/js/bootstrap.bundle.min.js}"></script>
+<!-- Core theme JS-->
+<script th:src="@{../js/scripts.js}"></script>
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+<!-- * *                               SB Forms JS                               * *-->
+<!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+<script th:src="@{https://cdn.startbootstrap.com/sb-forms-latest.js}"></script>
+
+</body>
+</html>
