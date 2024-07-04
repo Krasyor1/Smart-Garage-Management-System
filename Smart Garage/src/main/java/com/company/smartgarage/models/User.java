@@ -47,4 +47,31 @@ public class User {
             inverseJoinColumns =
                     { @JoinColumn(name = "token_id", referencedColumnName = "token_id") })
     private Token token;
+
+    @Override
+    public int hashCode() {
+        return Integer.hashCode(userId);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        User user = (User) obj;
+        return userId == user.userId;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", names='" + names + '\'' +
+                ", userRole=" + userRole +
+                ", userStatus=" + userStatus +
+                '}';
+    }
+
 }

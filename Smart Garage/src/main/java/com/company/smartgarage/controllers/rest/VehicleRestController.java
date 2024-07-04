@@ -60,8 +60,6 @@ public class VehicleRestController {
         return vehicleService.get(filterOptions);
     }
 
-
-
     @ApiResponse(responseCode = "200", description = "Successful operation")
     @ApiResponse(responseCode = "404", description = "Not Found")
     @Operation(summary = "Get vehicle by ID")

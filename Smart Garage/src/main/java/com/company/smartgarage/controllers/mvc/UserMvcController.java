@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/users")
@@ -112,11 +113,16 @@ public class UserMvcController {
     @GetMapping("/{id}")
     public String showSingleUser(@PathVariable int id, Model model, HttpSession session){
         try {
+            User currentUser = authenticationHelper.tryGetCurrentUser(session);
             User user = userService.getById(id);
+
             model.addAttribute("user", user);
-            model.addAttribute("userVehicles", user.getVehicles().stream().distinct());
+            model.addAttribute("userVehicles", user.getVehicles().stream().distinct().collect(Collectors.toList()));
+
             return "UserView";
-        }catch (EntityNotFoundException e){
+        } catch (AuthorizationException e) {
+            return "redirect:/auth/login";
+        } catch (EntityNotFoundException e) {
             model.addAttribute("error", e.getMessage());
             return "NotFoundView";
         }

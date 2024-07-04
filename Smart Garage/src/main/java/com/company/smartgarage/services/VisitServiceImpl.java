@@ -105,8 +105,10 @@ public class VisitServiceImpl implements VisitService {
         return totalPrice;
     }
     private void checkPermission(Visit visit, User user) {
-        if (isNotOwnerOfVehicle(visit, user) && user.getUserRole() == UserRole.CUSTOMER) {
-            throw new AuthorizationException(format(UNAUTHORIZED, user.getUsername(), "view"));
+        if (!isOwnerOfVehicle(visit, user)) {
+            if(user.getUserRole() == UserRole.CUSTOMER) {
+                throw new AuthorizationException(format(UNAUTHORIZED, user.getUsername(), "view"));
+            }
         }
     }
 
@@ -116,7 +118,7 @@ public class VisitServiceImpl implements VisitService {
         }
     }
 
-    private boolean isNotOwnerOfVehicle(Visit visit, User user) {
-        return user.getVehicles().stream().noneMatch(vehicle -> vehicle.getVisits().contains(visit));
+    private boolean isOwnerOfVehicle(Visit visit, User user) {
+        return (visit.getVehicle().getOwner()).equals(user);
     }
 }

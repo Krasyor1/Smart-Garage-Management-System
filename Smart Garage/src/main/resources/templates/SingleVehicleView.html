@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <meta name="description" content=""/>
     <meta name="author" content=""/>
-    <title>Services</title>
     <!-- Favicon-->
     <link rel="icon" type="image/x-icon" href="/static/assets/favicon.ico"/>
     <script th:src="@{/js/jq.js}"></script>
@@ -36,7 +35,6 @@
             margin-right: 40px;
             color: #6A679E;
         }
-
 
         .visit-list {
             display: flex;
@@ -141,7 +139,7 @@
         <form th:if="${isAdmin or isEmployee}" th:action="@{/visits/new/vehicle/{licensePlate}(licensePlate=${vehicle.licensePlate})}">
             <input style=" width: 10%" class="button-add login__submit" type="submit" value="New Visit">
         </form>
-        </br>
+        <br>
 
         <!-- Visits preview-->
         <div class="visit-list">
@@ -156,7 +154,7 @@
                 <tbody>
                 <tr th:each="visit : ${visits}">
                     <td>
-                        <a style="color: #01cc99" th:href="@{/visits/{id}(id=${visit.id})}" th:text="${visit.getCreationDate()}"></a>
+                        <a style="color: #01cc99" th:href="@{/visits/report/{id}(id=${visit.id})}" th:text="${visit.creationDate}"></a>
                     </td>
                     <td th:text="${visit.getStatus()}"></td>
                 </tr>

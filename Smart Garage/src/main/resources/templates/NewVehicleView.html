@@ -35,7 +35,7 @@
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
       border-radius: 8px;
       overflow: hidden;
-      max-width: 500px;
+      max-width: 400px;
       width: 100%;
     }
     .image-container {
@@ -44,7 +44,7 @@
       justify-content: center;
       align-items: center;
       overflow: hidden;
-      margin-bottom: -10px;
+      margin-bottom: -150px; /* Adjust this value as needed */
     }
     .image-container img {
       width: 100%;
@@ -59,7 +59,7 @@
     }
     .login__field {
       position: relative;
-      margin-bottom: 15px; /* Reduced margin to make fields closer */
+      margin-bottom: 20px;
     }
     .login__input, select {
       width: calc(100% - 20px);
@@ -111,75 +111,52 @@
     }
   </style>
 </head>
-<body id="page-top">
-<!-- Navigation-->
-<nav th:replace="~{/fragments/navbar :: navbar}">Header fragment</nav>
+<body>
 <div class="container">
   <div class="image-container">
     <img th:src="@{/assets/blueLogo.png}" alt="Car Service Logo">
   </div>
   <div class="screen__content">
     <h2 class="sub-heading">Add New Vehicle</h2>
-    <form class="login" action="#" th:action="@{/vehicles/new/{id}(id=${vehicle.getOwnerId()})}" th:object="${vehicle}" method="post">
+    <form class="login" th:action="@{/vehicles/new/{id}(id=${vehicle.ownerId})}" th:object="${vehicle}" method="post">
       <div class="login__field">
         <label for="brand">Car brand:</label>
         <select id="brand" name="brand" onchange="updateModels()">
           <option value="">-- Select a brand --</option>
-          <option th:each="brand : ${brands}" th:value="${brand.getId()}" th:text="${brand.brandName}"></option>
+          <option th:each="brand : ${brands}" th:value="${brand.id}" th:text="${brand.brandName}"></option>
         </select>
       </div>
       <div class="login__field">
-        <label th:field="*{modelId}" for="model">Car model:</label>
-        <select name="model" id="model" disabled onchange="updateModelId()">
+        <label for="model">Car model:</label>
+        <select id="model" name="model" disabled onchange="updateModelId()">
           <option th:value="*{modelId}">-- Select a model -- </option>
         </select>
         <input type="hidden" th:field="*{modelId}" name="modelId" id="modelId"/>
+        <label class="error" th:if="${#fields.hasErrors('modelId')}" th:errors="*{modelId}">Model Error placeholder</label>
       </div>
       <div class="login__field">
-        <label th:text="#{vehicle.label.year}">Vehicle Year</label>
-        <input type="number" class="login__input" th:field="*{creationYear}">
-        <label class="error" th:errors="*{creationYear}">Year Error placeholder</label>
+        <label for="creationYear" th:text="#{vehicle.label.year}">Vehicle Year</label>
+        <input type="number" id="creationYear" class="login__input" th:field="*{creationYear}">
+        <label class="error" th:if="${#fields.hasErrors('creationYear')}" th:errors="*{creationYear}">Year Error placeholder</label>
       </div>
       <div class="login__field">
-        <label th:text="#{vehicle.label.license-plate}">Vehicle License Plate</label>
-        <input type="text" class="login__input" th:field="*{licensePlate}" placeholder="License Plate">
-        <label class="error" th:errors="*{licensePlate}">License Plate Error placeholder</label>
+        <label for="licensePlate" th:text="#{vehicle.label.license-plate}">Vehicle License Plate</label>
+        <input type="text" id="licensePlate" class="login__input" th:field="*{licensePlate}" placeholder="License Plate">
+        <label class="error" th:if="${#fields.hasErrors('licensePlate')}" th:errors="*{licensePlate}">License Plate Error placeholder</label>
       </div>
       <div class="login__field">
-        <label th:text="#{vehicle.label.vin}">Vehicle VIN</label>
-        <input type="text" class="login__input" th:field="*{vin}" placeholder="VIN">
-        <label class="error" th:errors="*{vin}">VIN Error placeholder</label>
+        <label for="vin" th:text="#{vehicle.label.vin}">Vehicle VIN</label>
+        <input type="text" id="vin" class="login__input" th:field="*{vin}" placeholder="VIN">
+        <label class="error" th:if="${#fields.hasErrors('vin')}" th:errors="*{vin}">VIN Error placeholder</label>
       </div>
       <input type="hidden" th:field="*{ownerId}"/>
-      <button class="btn btn-primary btn-xl text-uppercase" id="submitButton" type="submit" th:text="Create">Create</button>
+      <button class="btn btn-primary" id="submitButton" type="submit" th:text="Create">Create</button>
     </form>
-    <a th:href="@{/users/{id}(id=${vehicle.getOwnerId()})}" class="cancel-button">Cancel</a>
+    <a th:href="@{/users/{id}(id=${vehicle.ownerId})}" class="cancel-button">Cancel</a>
   </div>
 </div>
-<!-- Footer-->
-<footer class="footer py-4">
-  <div class="container">
-    <div class="row align-items-center">
-      <div class="col-lg-4 text-lg-start">Copyright &copy; Your Website 2023</div>
-      <div class="col-lg-4 my-3 my-lg-0">
-        <a class="btn btn-dark btn-social mx-2" href="#!" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-        <a class="btn btn-dark btn-social mx-2" href="#!" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-        <a class="btn btn-dark btn-social mx-2" href="#!" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-      </div>
-      <div class="col-lg-4 text-lg-end">
-        <a class="link-dark text-decoration-none me-3" href="#!">Privacy Policy</a>
-        <a class="link-dark text-decoration-none" href="#!">Terms of Use</a>
-      </div>
-    </div>
-  </div>
-</footer>
 <script th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js}"></script>
 <!-- Core theme JS-->
 <script th:src="@{/js/scripts.js}"></script>
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
-<!-- * *                               SB Forms JS                               * *-->
-<!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
-<script th:src="@{https://cdn.startbootstrap.com/sb-forms-latest.js}"></script>
 </body>
 </html>

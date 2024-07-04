@@ -55,4 +55,15 @@ public class Visit {
         Visit visit = (Visit) obj;
         return id == visit.id;
     }
+
+    @Override
+    public String toString() {
+        return "Visit{" +
+                "id=" + id +
+                ", creationDate=" + creationDate +
+                ", totalPrice=" + totalPrice +
+                ", currency=" + currency +
+                ", status=" + status +
+                '}';
+    }
 }

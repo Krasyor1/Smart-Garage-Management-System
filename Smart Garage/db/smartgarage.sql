@@ -50,7 +50,7 @@ create table users
     user_id int auto_increment
         primary key,
     username varchar(20) not null,
-    password varchar(20) not null,
+    password varchar(255) not null,
     email varchar(60) not null,
     phone_number varchar(10) not null,
     user_role enum ('ADMINISTRATOR', 'EMPLOYEE', 'CUSTOMER') not null,

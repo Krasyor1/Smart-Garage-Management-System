@@ -46,7 +46,6 @@ dependencies {
 
 	implementation 'com.microsoft.sqlserver:mssql-jdbc:9.2.1.jre8'
 
-	implementation 'org.apache.commons:commons-lang3:3.14.0'
 }
 
 tasks.named('test') {

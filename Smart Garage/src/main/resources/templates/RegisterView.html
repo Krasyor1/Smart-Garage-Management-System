@@ -29,18 +29,18 @@
             justify-content: center;
             align-items: center;
             overflow: hidden;
-            margin-bottom: -150px; /* Adjust this value as needed */
+            margin-bottom: -150px;
         }
         .image-container img {
             width: 100%;
             height: auto;
         }
         .screen__content {
-            padding: 20px 40px 40px 40px; /* Reduced top padding */
+            padding: 20px 40px 40px 40px;
         }
         .login__field {
             position: relative;
-            margin-bottom: 5px;
+            margin-bottom: 20px;
         }
         .login__icon {
             position: absolute;
@@ -65,16 +65,6 @@
             font-size: 12px;
             margin-top: 5px;
         }
-        .forgotten-password {
-            display: block;
-            margin-top: 20px;
-            color: #007bff;
-            text-decoration: none;
-            font-size: 14px;
-        }
-        .forgotten-password:hover {
-            text-decoration: underline;
-        }
         .button {
             display: block;
             width: 100%;
@@ -89,6 +79,16 @@
         .button:hover {
             background-color: #0056b3;
         }
+        .forgotten-password {
+            display: block;
+            margin-top: 20px;
+            color: #007bff;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .forgotten-password:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -97,11 +97,16 @@
         <img th:src="@{/assets/blueLogo.png}" alt="Car Service Logo">
     </div>
     <div class="screen__content">
-        <form class="login" action="#" th:action="@{/auth/register}" th:object="${register}" method="post">
+        <form class="login" th:action="@{/auth/register}" th:object="${register}" method="post">
             <div class="login__field">
                 <i class="login__icon fas fa-user"></i>
                 <input type="text" class="login__input" th:field="*{username}" placeholder="Username">
                 <label class="error" th:errors="*{username}">Username errors</label>
+            </div>
+            <div class="login__field">
+                <i class="login__icon fas fa-id-card"></i>
+                <input type="text" class="login__input" th:field="*{names}" placeholder="Name">
+                <label class="error" th:errors="*{names}">Name errors</label>
             </div>
             <div class="login__field">
                 <i class="login__icon fas fa-lock"></i>
@@ -128,5 +133,6 @@
         <a class="forgotten-password" th:href="@{/auth/login}">Already have an account? Login here</a>
     </div>
 </div>
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </body>
 </html>

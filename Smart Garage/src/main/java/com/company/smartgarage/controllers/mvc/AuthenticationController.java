@@ -9,6 +9,8 @@ import com.company.smartgarage.helpers.UserMapper;
 import com.company.smartgarage.models.User;
 import com.company.smartgarage.models.dtos.LoginDto;
 import com.company.smartgarage.models.dtos.RegisterDto;
+import com.company.smartgarage.models.enums.UserRole;
+import com.company.smartgarage.models.enums.UserStatus;
 import com.company.smartgarage.services.contracts.UserService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -88,7 +90,7 @@ public class AuthenticationController {
 
     @PostMapping("/register")
     public String handleRegister(@Valid @ModelAttribute("register") RegisterDto register,
-                                 BindingResult bindingResult) {
+                                 BindingResult bindingResult, Model model) {
 
         if (bindingResult.hasErrors()) {
             return "RegisterView";
@@ -98,6 +100,7 @@ public class AuthenticationController {
             bindingResult.rejectValue("passwordConfirm", "password_error", "Password confirmation should match password.");
             return "RegisterView";
         }
+
         try {
             User user = userMapper.registerUserFromDto(register);
             userService.create(user);

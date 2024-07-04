@@ -2,8 +2,6 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Vehicles</title>
-  <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
   <meta name="description" content=""/>
   <meta name="author" content=""/>
@@ -49,81 +47,99 @@
 </head>
 <body id="page-top">
 <!-- Navigation-->
-<nav th:replace="~{/fragments/navbar :: navbar}">Heather fragment</nav>
+<nav th:replace="~{/fragments/navbar :: navbar}">Header fragment</nav>
 
-<section id="contact">
+<section id="vehicles">
   <div class="container">
     <div class="text-center">
       <h2 class="section-heading text-uppercase">Vehicles</h2>
-      <!-- Filers nd search bar -->
-      <form action="#" th:action="@{${showAllVehiclesUrl}}" th:method="post" th:object="${filterOptions}">
-        <input type="text" th:placeholder="Model" th:field="*{modelName}"/>
-        <input type="text" th:placeholder="Brand" th:field="*{brandName}"/>
-        <input type="text" th:placeholder="LicensePlate" th:field="*{licensePlate}"/>
-        <input type="text" th:placeholder="VIN" th:field="*{vin}"/>
-        <input type="text" th:placeholder="From" th:field="*{minYear}"/>
-        <input type="text" th:placeholder="To" th:field="*{maxYear}"/>
-        <br><br>
-        <select style="width: 20%" class="custom-select-wrapper" th:field="*{sortBy}" th:placeholder="Sort">
-          <option th:value='null' selected="selected" style=" display: none;">Sort by</option>
-          <option value="modelName">Model</option>
-          <option value="brandName">Brand</option>
-          <option value="licensePlate">License Plate</option>
-          <option value="vin">VIN</option>
-          <option value="year">Year</option>
-        </select>
-        <br><br>
-        <select style="width: 20%" class="custom-select-wrapper" th:placeholder="Order" th:field="*{orderBy}">
-          <option th:value='null' selected="selected" style=" display: none;">Order by</option>
-          <option value="asc">Ascending</option>
-          <option value="desc">Descending</option>
-        </select>
-        <br/><br/>
-
-        <input type="submit" value="Search"/>
-
-      </form>
-      <form>
-        <input th:action="@{/vehicles}" th:method="get" type="submit" value="Clear"/>
+      <!-- Filter and search bar -->
+      <form action="#" th:action="@{/vehicles}" method="post" th:object="${filterOptions}" class="row g-3 justify-content-center">
+        <div class="col-md-3">
+          <input type="text" class="form-control" placeholder="Model" th:field="*{modelName}"/>
+        </div>
+        <div class="col-md-3">
+          <input type="text" class="form-control" placeholder="Brand" th:field="*{brandName}"/>
+        </div>
+        <div class="col-md-3">
+          <input type="text" class="form-control" placeholder="License Plate" th:field="*{licensePlate}"/>
+        </div>
+        <div class="col-md-3">
+          <input type="text" class="form-control" placeholder="VIN" th:field="*{vin}"/>
+        </div>
+        <div class="col-md-3">
+          <input type="text" class="form-control" placeholder="From Year" th:field="*{minYear}"/>
+        </div>
+        <div class="col-md-3">
+          <input type="text" class="form-control" placeholder="To Year" th:field="*{maxYear}"/>
+        </div>
+        <div class="col-md-3">
+          <select class="form-select" th:field="*{sortBy}">
+            <option th:value='null' selected="selected" disabled>Sort by</option>
+            <option value="modelName">Model</option>
+            <option value="brandName">Brand</option>
+            <option value="licensePlate">License Plate</option>
+            <option value="vin">VIN</option>
+            <option value="year">Year</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <select class="form-select" th:field="*{orderBy}">
+            <option th:value='null' selected="selected" disabled>Order by</option>
+            <option value="asc">Ascending</option>
+            <option value="desc">Descending</option>
+          </select>
+        </div>
+        <div class="col-md-1 d-flex align-items-end">
+          <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+        <div class="col-md-1 d-flex align-items-end">
+          <a th:href="@{/vehicles}" class="btn btn-secondary">Clear</a>
+        </div>
       </form>
     </div>
     <!-- Vehicles List -->
     <div id="vehicleList">
-      <div th:each="vehicle : ${filteredVehicles}" class="vehicle">
+      <div th:each="vehicle : ${vehicles}" class="vehicle">
         <a th:href="@{/vehicles/{id}(id=${vehicle.id})}" onclick="toggleDetails(this)">
           <span class="licensePlate" th:text="${vehicle.licensePlate}"></span>
         </a>
         <br>
         <div class="details">
           <p>Model: <span th:text="${vehicle.model.modelName}"></span></p>
-          <p>Brand: <span th:text="${vehicle.getModel().getBrand().brandName}"></span></p>
+          <p>Brand: <span th:text="${vehicle.model.brand.brandName}"></span></p>
           <p>Creation Year: <span th:text="${vehicle.year}"></span></p>
           <p>VIN: <span th:text="${vehicle.vin}"></span></p>
-          <a th:if="${isAdmin or isEmployee}"th:href="@{/vehicles/{id}/update(id=${vehicle.id})}">
-            <input style="width: 10%" class="button login__submit" type="submit" value="Edit">
+          <a th:if="${isAdmin or isEmployee}" th:href="@{/vehicles/{id}/update(id=${vehicle.id})}">
+            <input style="width: 10%" class="btn btn-secondary" type="button" value="Edit">
           </a>
         </div>
       </div>
     </div>
-    <script>
-      function toggleDetails(element) {
-        var details = element.nextElementSibling;
-        if (details.style.display === "none") {
-          details.style.display = "block";
-        } else {
-          details.style.display = "none";
-        }
-      }
-    </script>
   </div>
 </section>
-<script th:src="@{https://cdn.jsdelivr.net/npm/bootstrap5.2.3/dist/js/bootstrap.bundle.min.js}"></script>
+
+<script>
+  function toggleDetails(element) {
+    var details = element.nextElementSibling;
+    if (details.style.display === "none") {
+      details.style.display = "block";
+    } else {
+      details.style.display = "none";
+    }
+  }
+
+  // Ensure all details sections are initially hidden
+  document.addEventListener("DOMContentLoaded", function () {
+    var detailsElements = document.querySelectorAll('.details');
+    detailsElements.forEach(function (details) {
+      details.style.display = "none";
+    });
+  });
+</script>
+
+<script th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js}"></script>
 <!-- Core theme JS-->
-<script th:src="@{../js/scripts.js}"></script>
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
-<!-- * *                               SB Forms JS                               * *-->
-<!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
-<script th:src="@{https://cdn.startbootstrap.com/sb-forms-latest.js}"></script>
+<script th:src="@{/js/scripts.js}"></script>
 </body>
 </html>

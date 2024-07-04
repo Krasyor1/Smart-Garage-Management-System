@@ -80,7 +80,8 @@ public class VehicleMvcController {
     @GetMapping
     public String showAllUsers(Model model) {
         model.addAttribute("filterOptions", new FilterVehiclesDto());
-        model.addAttribute("vehicles", vehicleService.getAll());
+        List<Vehicle> vehicles = vehicleService.getAll();
+        model.addAttribute("vehicles", vehicles);
         return "AllVehiclesView";
     }
 
@@ -184,7 +185,7 @@ public class VehicleMvcController {
         vehicleDto.setOwnerId(id);
         model.addAttribute("vehicle", vehicleDto);
         model.addAttribute("brands", brandService.getAll());
-        return String.format("redirect:/vehicles/new/%d", id);
+        return "NewVehicleView"; // Return the view name instead of redirecting
     }
 
     @PostMapping("/new/{id}")
@@ -194,7 +195,8 @@ public class VehicleMvcController {
                                   HttpSession session,
                                   Model model) {
         if (bindingResult.hasErrors()) {
-            return "NewVehicleView";
+            model.addAttribute("brands", brandService.getAll());
+            return "NewVehicleView"; // Return the view name for the form with errors
         }
 
         try {

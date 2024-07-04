@@ -18,7 +18,7 @@ public class PasswordConstraintValidator implements ConstraintValidator<ValidPas
     public boolean isValid(String password, ConstraintValidatorContext context) {
         PasswordValidator passwordValidator = new PasswordValidator(Arrays.asList(
                 //Length rule. Min 8 max 38 characters
-                new LengthRule(8, 38),
+                new LengthRule(8, 255),
 
                 //At least one upper case letter
                 new CharacterRule(EnglishCharacterData.UpperCase, 1),
